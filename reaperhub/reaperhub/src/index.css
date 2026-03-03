@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Creepster&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* ── Root / Variables ─────────────────────────────────────────────────────── */
+:root {
+  --blood:         #8a0000;
+  --blood-dark:    #4a0000;
+  --blood-deep:    #200000;
+  --blood-light:   #c0002a;
+  --void:          #000000;
+  --void-warm:     #0a0000;
+  --purple-dark:   #3c003c;
+  --purple-mid:    #5a0060;
+  --text:          #e8d0d0;
+  --text-dim:      #9a7070;
+  --glass-bg:      rgba(138,0,0,0.06);
+  --glass-border:  rgba(138,0,0,0.25);
+  --glass-purple:  rgba(60,0,60,0.08);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--blood) var(--void);
+}
+
+html::-webkit-scrollbar        { width: 6px; }
+html::-webkit-scrollbar-track  { background: #000; }
+html::-webkit-scrollbar-thumb  { background: var(--blood); border-radius: 3px; }
+
+body {
+  background: #000000;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, #30000088 0%, transparent 60%),
+    radial-gradient(ellipse at 0% 50%,  #20002044 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 80%, #3c003c33 0%, transparent 50%);
+  color: var(--text);
+  font-family: 'Chakra Petch', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── Custom Cursor ────────────────────────────────────────────────────────── */
+#reaper-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 12px; height: 12px;
+  background: radial-gradient(circle, #ff2244 0%, #8a0000 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s, height 0.15s, background 0.15s;
+  box-shadow: 0 0 8px #c0002a, 0 0 16px #8a000088;
+  mix-blend-mode: screen;
+}
+#reaper-cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 28px; height: 28px;
+  border: 1px solid rgba(138,0,0,0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: all 0.12s ease;
+}
+body.cursor-hover #reaper-cursor       { width: 20px; height: 20px; background: radial-gradient(circle,#ff4466 0%,#c0002a 70%); }
+body.cursor-hover #reaper-cursor-ring  { width: 44px; height: 44px; border-color: rgba(192,0,42,0.8); }
+
+/* ── Glassmorphism Cards ──────────────────────────────────────────────────── */
+@layer components {
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(138,0,0,0.08) 0%, rgba(60,0,60,0.04) 100%);
+    pointer-events: none;
+  }
+
+  .blood-btn {
+    @apply relative overflow-hidden px-6 py-3 font-tech text-sm font-semibold tracking-widest uppercase;
+    background: linear-gradient(135deg, #8a0000, #600000);
+    border: 1px solid rgba(138,0,0,0.6);
+    border-radius: 6px;
+    color: #ffd0d0;
+    cursor: none;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 8px rgba(255,100,100,0.5);
+  }
+  .blood-btn:hover {
+    box-shadow: 0 0 15px #c0002aaa, 0 0 30px #8a000066;
+    transform: translateY(-2px);
+    border-color: #c0002a;
+  }
+  .blood-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, transparent 60%, rgba(255,50,50,0.15));
+    pointer-events: none;
+  }
+
+  .ghost-btn {
+    @apply relative overflow-hidden px-6 py-3 font-tech text-sm font-semibold tracking-widest uppercase;
+    background: transparent;
+    border: 1px solid rgba(138,0,0,0.5);
+    border-radius: 6px;
+    color: #cc8888;
+    cursor: none;
+    transition: all 0.3s ease;
+  }
+  .ghost-btn:hover {
+    background: rgba(138,0,0,0.1);
+    border-color: var(--blood);
+    color: #ffd0d0;
+    box-shadow: 0 0 12px rgba(138,0,0,0.4);
+    transform: translateY(-2px);
+  }
+
+  .glow-text {
+    text-shadow: 0 0 10px rgba(192,0,42,0.8), 0 0 20px rgba(138,0,0,0.5), 0 0 40px rgba(138,0,0,0.3);
+  }
+
+  .blood-input {
+    @apply w-full px-4 py-3 rounded-lg text-sm font-body;
+    background: rgba(20,0,0,0.8);
+    border: 1px solid rgba(138,0,0,0.3);
+    color: #e8d0d0;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .blood-input:focus {
+    border-color: rgba(138,0,0,0.8);
+    box-shadow: 0 0 0 2px rgba(138,0,0,0.15), 0 0 12px rgba(138,0,0,0.2);
+  }
+  .blood-input::placeholder { color: #604040; }
+
+  .rank-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-tech font-semibold tracking-wider uppercase;
+  }
+  .rank-Spectral     { background: rgba(60,60,60,0.3);   border: 1px solid #444;     color: #aaa; }
+  .rank-Reaper       { background: rgba(138,0,0,0.2);    border: 1px solid #8a0000;  color: #cc6666; }
+  .rank-BloodLord    { background: rgba(180,0,0,0.25);   border: 1px solid #aa0000;  color: #ee6666; }
+  .rank-DeathKnight  { background: rgba(60,0,60,0.3);    border: 1px solid #5a0060;  color: #cc66cc; }
+  .rank-LichKing     { background: rgba(100,0,100,0.35); border: 1px solid #8a0090;  color: #ee88ff; }
+  .rank-Staff        { background: rgba(0,60,100,0.3);   border: 1px solid #0060aa;  color: #66aaff; }
+  .rank-Admin        { background: rgba(100,60,0,0.3);   border: 1px solid #aa6600;  color: #ffcc66; }
+
+  /* Blood Drip element */
+  .drip {
+    position: absolute;
+    top: -2px;
+    width: 3px;
+    background: linear-gradient(180deg, var(--blood) 0%, transparent 100%);
+    border-radius: 0 0 50% 50%;
+    animation: drip-fall 2.5s ease-in infinite;
+    transform-origin: top center;
+  }
+  @keyframes drip-fall {
+    0%   { height: 0; opacity: 0; }
+    20%  { opacity: 0.8; }
+    100% { height: 40px; opacity: 0; transform: translateY(40px); }
+  }
+
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blood) 30%, var(--blood) 70%, transparent);
+    opacity: 0.4;
+    position: relative;
+  }
+  .section-divider::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: 50%;
+    transform: translateX(-50%);
+    width: 8px; height: 8px;
+    background: var(--blood);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--blood);
+  }
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+* { scrollbar-width: thin; scrollbar-color: #8a0000 #0a0000; }
+
+/* ── Skeleton Loader ─────────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #1a0000 25%, #300000 50%, #1a0000 75%);
+  background-size: 200% 100%;
+  animation: skeleton-wave 1.5s ease-in-out infinite;
+}
+@keyframes skeleton-wave {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Noise Texture Overlay ───────────────────────────────────────────────── */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.03;
+}
+
+/* ── Hero Scanline Effect ─────────────────────────────────────────────────── */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.15) 2px,
+    rgba(0,0,0,0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Tag Colors ───────────────────────────────────────────────────────────── */
+.tag-free    { background: rgba(0,80,0,0.25);  border-color: #006600; color: #44ee44; }
+.tag-premium { background: rgba(100,60,0,0.3); border-color: #aa6600; color: #ffcc44; }
+.tag-op      { background: rgba(138,0,0,0.25); border-color: #8a0000; color: #ff4444; }
+.tag-gui     { background: rgba(0,60,80,0.25); border-color: #005566; color: #44ccff; }
+.tag-farm    { background: rgba(60,0,60,0.25); border-color: #5a0060; color: #cc44ff; }
